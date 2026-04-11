@@ -19,9 +19,8 @@ const Login = () => {
       {/* Left - Form */}
       <div className="flex-1 flex flex-col justify-between p-8 md:p-12 lg:p-16">
         <div>
-          <Link to="/" className="flex items-center gap-3 mb-12">
-            <img src={logo} alt="Dnyaanvishva" className="h-10" />
-            <span className="font-bold text-lg text-foreground">Dnyaanvishva Tutorials</span>
+          <Link to="/" className="flex items-center gap-3 mb-10">
+            <img src={logo} alt="Dnyaanvishva" className="h-20" />
           </Link>
 
           <div className="max-w-md">
