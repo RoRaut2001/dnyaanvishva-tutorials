@@ -30,40 +30,78 @@ const courses = [
 
 const CoursesSection = () => {
   return (
-    <section className="py-20 md:py-28">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-2">Academic Pathways</h2>
-            <p className="text-muted-foreground max-w-lg">
-              Rigorous preparation modules designed by the Academic Curator team to ensure excellence in competitive arenas.
-            </p>
-          </div>
-          <Link to="/admissions" className="mt-4 md:mt-0 text-primary font-semibold text-sm inline-flex items-center gap-1 hover:gap-2 transition-all">
-            Explore Full Curriculum <ArrowRight size={16} />
-          </Link>
-        </div>
+      <section className="py-20 md:py-28">
+        <div className="container mx-auto px-4">
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses.map((course) => (
-            <div
-              key={course.title}
-              className="group bg-card rounded-2xl p-8 border border-border hover:shadow-card-hover transition-all duration-300"
-            >
-              <div className={`w-14 h-14 rounded-xl ${course.bgColor} flex items-center justify-center mb-6`}>
-                <course.icon size={24} className={course.color} />
-              </div>
-              <h3 className="text-lg font-bold text-foreground mb-3">{course.title}</h3>
-              <p className="text-muted-foreground text-sm mb-6 leading-relaxed">{course.desc}</p>
-              <div className="flex items-center justify-between pt-4 border-t border-border">
-                <span className="text-xs text-muted-foreground font-medium">{course.tag}</span>
-                <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
-              </div>
+          {/* Heading */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-2">
+                Academic Pathways
+              </h2>
+              <p className="text-muted-foreground max-w-lg">
+                Rigorous preparation modules designed by the Academic Curator team to ensure excellence in competitive arenas.
+              </p>
             </div>
-          ))}
+
+            <Link
+                to="/admissions"
+                className="mt-4 md:mt-0 text-primary font-semibold text-sm inline-flex items-center gap-1 hover:gap-2 transition-all"
+            >
+              Explore Full Curriculum <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          {/* Courses Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map((course) => (
+                <div
+                    key={course.title}
+                    className="group bg-card rounded-2xl p-8 border border-border hover:shadow-card-hover transition-all duration-300"
+                >
+                  <div className={`w-14 h-14 rounded-xl ${course.bgColor} flex items-center justify-center mb-6`}>
+                    <course.icon size={24} className={course.color} />
+                  </div>
+
+                  <h3 className="text-lg font-bold text-foreground mb-3">
+                    {course.title}
+                  </h3>
+
+                  <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+                    {course.desc}
+                  </p>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-border">
+                <span className="text-xs text-muted-foreground font-medium">
+                  {course.tag}
+                </span>
+                    <ArrowRight
+                        size={16}
+                        className="text-muted-foreground group-hover:text-primary transition-colors"
+                    />
+                  </div>
+                </div>
+            ))}
+          </div>
+
+          {/* ✅ VIDEO SECTION */}
+          <div className="mt-20">
+            <div className="relative w-full pt-[56.25%] rounded-xl overflow-hidden shadow-lg">
+              <iframe
+                  src="https://www.youtube.com/embed/MVvHdH6n2VE"
+                  className="absolute top-0 left-0 w-full h-full"
+                  frameBorder="0"
+                  allow="autoplay;
+                  fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title="DT Video"
+              ></iframe>
+            </div>
+
+          </div>
+
         </div>
-      </div>
-    </section>
+      </section>
   );
 };
 
