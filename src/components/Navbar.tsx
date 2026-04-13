@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Menu, X, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/dtlogo.png";
 
 const navLinks = [
@@ -10,93 +11,157 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [scrolled]);
+
+  const transition = useMemo(() => ({
+    duration: 0.5,
+    ease: [0.22, 1, 0.36, 1],
+  }), []);
+
   return (
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
-        {/* Container horizontal padding removed to fit logo on the left edge */}
-        <div className="container mx-auto flex items-center justify-between ">
-          {/* Logo link with no padding/gap to fit flush in the bar */}
-          <Link to="/" className="flex items-center">
-            <img src={logo} alt="Dnyaanvishva Tutorials" className="h-14 md:h-15 w-auto object-contain" />
-          </Link>
+      <header className="fixed top-0 left-0 right-0 z-50 w-full will-change-transform">
+        {/* TOP BANNER */}
+        <motion.div
+            initial={false}
+            animate={{
+              height: scrolled ? 0 : "auto",
+              opacity: scrolled ? 0 : 1,
+              y: scrolled ? -20 : 0
+            }}
+            transition={transition}
+            className="w-full bg-[#F6F4B2] overflow-hidden"
+        >
+          <div className="container mx-auto flex justify-center py-6">
+            <img
+                src={logo}
+                alt="Dnyaanvishva Tutorials"
+                className="h-24 md:h-32 object-contain"
+            />
+          </div>
+        </motion.div>
 
-          {/* Padding restored for right-side elements to keep original alignment */}
-          <div className="flex items-center px-4 gap-6">
-            {/* Desktop Links */}
-            <ul className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                        to={link.href}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                            location.pathname === link.href
-                                ? "text-primary border-primary"
-                                : "text-foreground/70 hover:text-primary"
-                        }`}
+        {/* MAIN NAV */}
+        <motion.nav
+            animate={{
+              backgroundColor: scrolled ? "rgba(255, 255, 255, 0.8)" : "rgba(255, 255, 255, 1)",
+              backdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
+              paddingTop: scrolled ? "0.7rem" : "0.90rem",
+              paddingBottom: scrolled ? "0.7rem" : "0.90rem",
+            }}
+            transition={transition}
+            className="w-full border-b border-border"
+        >
+          <div className="container mx-auto flex items-center justify-between px-6">
+            <div className="flex items-center">
+              <AnimatePresence mode="wait">
+                {scrolled && (
+                    <motion.div
+                        key="nav-logo"
+                        initial={{ opacity: 0, x: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        exit={{ opacity: 0, x: -10, scale: 0.95 }}
+                        transition={transition}
                     >
-                      {link.label}
-                    </Link>
-                  </li>
-              ))}
-            </ul>
-
-            <div className="hidden md:flex items-center gap-6">
-              <Link
-                  to="/login"
-                  className="text-sm font-semibold text-foreground/70 hover:text-primary transition-colors"
-              >
-                Account Login
-              </Link>
-              <Link
-                  to="/admissions"
-                  className="text-sm font-bold text-secondary hover:text-secondary/80 transition-colors uppercase tracking-wide"
-              >
-                Apply Now
-              </Link>
+                      <Link to="/">
+                        <img src={logo} alt="logo" className="h-10 w-auto" />
+                      </Link>
+                    </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            <button onClick={() => setOpen(!open)} className="md:hidden p-2 text-foreground">
-              {open ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-
-        {open && (
-            <div className="md:hidden bg-background border-t border-border animate-fade-in-up">
-              <ul className="flex flex-col p-4 gap-1">
+            <div className="hidden md:flex items-center gap-8">
+              <ul className="flex items-center gap-1">
                 {navLinks.map((link) => (
                     <li key={link.href}>
                       <Link
                           to={link.href}
-                          onClick={() => setOpen(false)}
-                          className={`block px-4 py-3 rounded-lg font-medium transition-all ${
-                              location.pathname === link.href ? "text-primary bg-primary/5" : "text-foreground/70 hover:text-primary"
+                          className={`relative px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+                              location.pathname === link.href ? "text-primary" : "text-muted-foreground hover:text-primary"
                           }`}
                       >
                         {link.label}
+                        {location.pathname === link.href && (
+                            <motion.span
+                                layoutId="nav-underline"
+                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary mx-4"
+                                transition={transition}
+                            />
+                        )}
                       </Link>
                     </li>
                 ))}
-                <li>
-                  <Link to="/login" onClick={() => setOpen(false)} className="block px-4 py-3 text-foreground/70 font-medium">
-                    Account Login
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                      to="/admissions"
-                      onClick={() => setOpen(false)}
-                      className="block px-4 py-3 text-secondary font-bold text-center uppercase tracking-wide"
-                  >
-                    Apply Now
-                  </Link>
-                </li>
               </ul>
+
+              <div className="flex items-center gap-6 pl-6 border-l border-border/60">
+                <Link
+                    to="/login"
+                    className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Login
+                </Link>
+                {/* APPLY NOW AS TEXT LINK */}
+                <Link
+                    to="/admissions"
+                    className="text-xs font-black uppercase tracking-widest text-primary hover:text-primary/80 active:scale-95 transition-all"
+                >
+                  Apply Now
+                </Link>
+              </div>
             </div>
-        )}
-      </nav>
+
+            <button
+                onClick={() => setOpen(!open)}
+                className="md:hidden hover:bg-black/5 rounded-full transition-colors"
+            >
+              {open ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+
+          {/* MOBILE MENU */}
+          <AnimatePresence>
+            {open && (
+                <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={transition}
+                    className="md:hidden overflow-hidden bg-background"
+                >
+                  <div className="flex flex-col p-6 gap-5">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            to={link.href}
+                            onClick={() => setOpen(false)}
+                            className="text-lg"
+                        >
+                          {link.label}
+                        </Link>
+                    ))}
+                    <div className="h-[1px] bg-border w-full" />
+                    <Link to="/login" className="text-muted-foreground">Login</Link>
+                    <Link to="/admissions" className="text-primary font-black uppercase">Apply Now</Link>
+                  </div>
+                </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.nav>
+      </header>
   );
 };
 

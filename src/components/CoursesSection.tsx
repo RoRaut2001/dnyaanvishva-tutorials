@@ -32,8 +32,6 @@ const CoursesSection = () => {
   return (
       <section className="py-20 md:py-28">
         <div className="container mx-auto px-4">
-
-          {/* Heading */}
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-2">
@@ -51,8 +49,6 @@ const CoursesSection = () => {
               Explore Full Curriculum <ArrowRight size={16} />
             </Link>
           </div>
-
-          {/* Courses Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
                 <div
@@ -83,8 +79,6 @@ const CoursesSection = () => {
                 </div>
             ))}
           </div>
-
-          {/* ✅ VIDEO SECTION */}
           <div className="mt-20">
             <div className="relative w-full pt-[56.25%] rounded-xl overflow-hidden shadow-lg">
               <iframe
