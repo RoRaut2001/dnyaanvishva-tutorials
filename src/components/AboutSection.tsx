@@ -1,4 +1,4 @@
-import { Heart, BookOpen, Users, Shield } from "lucide-react";
+import { Heart, BookOpen, Shield } from "lucide-react";
 import directorImg from "@/assets/director.jpg";
 import mentorshipImg from "@/assets/mentorship.jpg";
 
