@@ -233,7 +233,7 @@ const PillarsSection = () => (
 
 const AboutSection = () => (
     <>
-      <AboutHero />
+      {/*<AboutHero />*/}
       <DirectorSection />
       <PillarsSection />
     </>
